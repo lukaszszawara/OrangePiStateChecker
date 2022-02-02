@@ -69,9 +69,8 @@ class MainActivity : AppCompatActivity() {
         val input = EditText(this)
         input.hint = "Enter server adress"
         val url = getUrl()
-        if(url.isNullOrEmpty()){
-            input.text.clear()
-            input.text.append(url)
+        if(!url.isNullOrEmpty()){
+            input.setText(url)
         }
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
