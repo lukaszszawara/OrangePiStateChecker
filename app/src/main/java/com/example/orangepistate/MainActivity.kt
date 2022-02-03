@@ -8,6 +8,7 @@ import android.text.InputType
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -19,6 +20,7 @@ import com.google.gson.Gson
 class MainActivity : AppCompatActivity() {
     private lateinit var button : Button
     private lateinit var fab : FloatingActionButton
+    private lateinit var mainInfoText: TextView
     private lateinit var temperatureView: ThermometerView
     private lateinit var sharedPreferences: SharedPreferences
     private var SHARED_NAME = "shared_prefs_orange"
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         button = findViewById(R.id.btn_anim)
         temperatureView = findViewById(R.id.tv_thermometer)
         fab = findViewById(R.id.fab)
+        mainInfoText = findViewById(R.id.main_info);
         sharedPreferences = getSharedPreferences(SHARED_NAME, MODE_PRIVATE)
         refreshTemperature()
         fab.setOnClickListener {
@@ -49,7 +52,14 @@ class MainActivity : AppCompatActivity() {
                 { response ->
                     val value = Gson().fromJson(response, HttpRequestTemp::class.java)
                     temperatureView.setValueAndStartAnim(value.temp / 1000F)
-                    Log.d("TAG", "Response is: ${value.temp / 1000F}")
+                    mainInfoText.setText(value.sysInfo.replace("[0m","")
+                        .replace("[0;92m","").replace("[92m","")
+                        .replace("{","").replace("}","")
+                        .replace("Up time:      ","\nUp time:").replace("Memory","\nMemory")
+                        .replace("IP:           ","\nIP:").replace("Usage of","\nUsage of")
+                        .replace("CPU temp:","").replace("Local users"," Local users")
+                        .replace(Regex("..C"),"")    )
+                    Log.d("TAG", "Response is: ${response}")
                 },
                 {
                     Snackbar.make(temperatureView, "ERROR!! $it",

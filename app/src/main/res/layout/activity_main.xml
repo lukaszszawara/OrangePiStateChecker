@@ -8,15 +8,22 @@
     android:background="@color/white"
     android:gravity="center_horizontal"
     tools:context=".MainActivity">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:id="@+id/main_info"
+        android:textColor="@color/black"
+        android:text="test fdsafsaf"
+        />
 
     <com.biansemao.widget.ThermometerView
         android:id="@+id/tv_thermometer"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_margin="20dp"
-        android:paddingTop="30dp"
-        android:paddingBottom="30dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:maxScaleValue="26dp"
         app:minScaleValue="12dp" />
 
@@ -31,7 +38,6 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
         android:src="@drawable/ic_launcher_foreground"
         android:layout_margin="16dp" />
 
