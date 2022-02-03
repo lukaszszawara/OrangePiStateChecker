@@ -14,7 +14,7 @@
         android:layout_marginTop="15dp"
         android:id="@+id/main_info"
         android:textColor="@color/black"
-        android:text="test fdsafsaf"
+        android:text=""
         />
 
     <com.biansemao.widget.ThermometerView
