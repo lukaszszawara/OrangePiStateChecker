@@ -1,101 +1,43 @@
 package com.example.orangepistate
 
-import android.app.AlertDialog
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
-import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import com.android.volley.Request
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
-import com.biansemao.widget.ThermometerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
+
+import androidx.viewpager.widget.ViewPager
+
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var button : Button
-    private lateinit var fab : FloatingActionButton
-    private lateinit var mainInfoText: TextView
-    private lateinit var temperatureView: ThermometerView
-    private lateinit var sharedPreferences: SharedPreferences
-    private var SHARED_NAME = "shared_prefs_orange"
-    private var SHARED_URL_ADDRESS = "url_address"
+
+
+    lateinit var tabLayout: TabLayout
+    lateinit var viewPager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button = findViewById(R.id.btn_anim)
-        temperatureView = findViewById(R.id.tv_thermometer)
-        fab = findViewById(R.id.fab)
-        mainInfoText = findViewById(R.id.main_info);
-        sharedPreferences = getSharedPreferences(SHARED_NAME, MODE_PRIVATE)
-        refreshTemperature()
-        fab.setOnClickListener {
-            showServerSettingDialog()
-        }
-        button.setOnClickListener {
-            refreshTemperature()
-        }
-    }
+        val tabs = ArrayList<String>()
+        tabs.add(Const.RASPPERRY_PI)
+        tabs.add(Const.ORANGE_PI)
+        title = "Informations about Single board computers"
+        tabLayout = findViewById(R.id.tabLayout)
+        viewPager = findViewById(R.id.viewPager)
+        tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI))
+        tabLayout.addTab(tabLayout.newTab().setText(Const.ORANGE_PI))
+        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        val adapter = InformationAdapter(this, supportFragmentManager,
+            tabLayout.tabCount,tabs
+        )
+        viewPager.adapter = adapter
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
 
-    private fun refreshTemperature() {
-        val queue = Volley.newRequestQueue(this)
-        val url = getUrl()
-        if(!url.isNullOrEmpty()) {
-            val stringRequestq = StringRequest(
-                Request.Method.GET, url,
-                { response ->
-                    val value = Gson().fromJson(response, HttpRequestTemp::class.java)
-                    temperatureView.setValueAndStartAnim(value.temp / 1000F)
-                    mainInfoText.setText(value.sysInfo.replace("[0m","")
-                        .replace("[0;92m","").replace("[92m","")
-                        .replace("{","").replace("}","")
-                        .replace("Up time:      ","\nUp time:").replace("Memory","\nMemory")
-                        .replace("IP:           ","\nIP:").replace("Usage of","\nUsage of")
-                        .replace("CPU temp:","").replace("Local users"," Local users")
-                        .replace(Regex("..C"),"")    )
-                    Log.d("TAG", "Response is: ${response}")
-                },
-                {
-                    Snackbar.make(temperatureView, "ERROR!! $it",
-                        Snackbar.LENGTH_LONG).show()
-                })
 
-            queue.add(stringRequestq)
-        }else{
-        showServerSettingDialog()
-        }
-    }
-
-    private fun showServerSettingDialog() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Warning!")
-
-        val input = EditText(this)
-        input.hint = "Enter server adress"
-        val url = getUrl()
-        if(!url.isNullOrEmpty()){
-            input.setText(url)
-        }
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-
-        builder.setPositiveButton("OK") { _, _ ->
-            sharedPreferences.edit().putString(
-                SHARED_URL_ADDRESS,
-                input.text.toString()
-            ).apply()
-        }
-        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-        builder.show()
-    }
-
-    private fun getUrl(): String? {
-        return sharedPreferences.getString(SHARED_URL_ADDRESS,"")
     }
 }
