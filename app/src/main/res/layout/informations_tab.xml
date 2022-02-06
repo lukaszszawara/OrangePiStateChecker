@@ -32,9 +32,7 @@
     <com.biansemao.widget.ThermometerView
         android:id="@+id/tv_thermometer"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_height="350dp"
         app:maxScaleValue="26dp"
         app:minScaleValue="12dp" />
     <LinearLayout

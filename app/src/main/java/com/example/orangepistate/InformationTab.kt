@@ -71,16 +71,8 @@ private var SHARED_URL_ADDRESS = "url_address"
                       if(tabName.equals(Const.ORANGE_PI)) {
                           temperatureView.setValueAndStartAnim(value.temp / 1000F)
                           mainInfoText.setText(
-                              value.sysInfo.replace("[0m", "")
-                                  .replace("[0;92m", "").replace("[92m", "")
-                                  .replace("{", "").replace("}", "")
-                                  .replace("Up time:      ", "\nUp time:")
-                                  .replace("Memory", "\nMemory")
-                                  .replace("IP:           ", "\nIP:")
-                                  .replace("Usage of", "\nUsage of")
-                                  .replace("CPU temp:", "").replace("Local users", " Local users")
-                                  .replace(Regex("..C"), "")
-                          )
+                              value.sysInfo.replace("/dev/mmcblk2p1","\n/dev/mmcblk2p1")
+                                  .replace("{ lukasz@orangepiplus2e\n","").replace("/media/82fe8fc9-188b-4352-a343-96463f90347c}",""))
                       }else if(tabName.equals(Const.RASPPERRY_PI)){
                           temperatureView.setValueAndStartAnim(value.temp / 1000f)
                           mainInfoText.setText(
