@@ -121,6 +121,7 @@ private var SHARED_URL_AUTH = "url_authentication"
           if(!url.isNullOrEmpty()){
               input.setText(url)
           }
+          password.setText(getPassword())
           input.inputType = InputType.TYPE_CLASS_TEXT
 
           builder.setPositiveButton("OK") { _, _ ->
