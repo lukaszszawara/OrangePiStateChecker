@@ -19,11 +19,13 @@ class MainActivity : AppCompatActivity() {
         val tabs = ArrayList<String>()
         tabs.add(Const.RASPPERRY_PI)
         tabs.add(Const.ORANGE_PI)
+        tabs.add(Const.RASPPERRY_PI_400)
         title = "Informations about SBC's"
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI))
         tabLayout.addTab(tabLayout.newTab().setText(Const.ORANGE_PI))
+        tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI_400))
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val adapter = InformationAdapter(this, supportFragmentManager,
             tabLayout.tabCount,tabs

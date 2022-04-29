@@ -10,14 +10,14 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="left"
         android:orientation="horizontal">
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:id="@+id/image"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/orangepiplus2e"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="350dp"
         app:maxScaleValue="26dp"
-        app:minScaleValue="12dp" />
+        app:minScaleValue="8dp" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

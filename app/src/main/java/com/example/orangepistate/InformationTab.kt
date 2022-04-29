@@ -51,6 +51,8 @@ private var SHARED_URL_AUTH = "url_authentication"
         sharedPreferences = requireContext().getSharedPreferences(SHARED_NAME, MODE_PRIVATE)
         if(tabName.equals(Const.RASPPERRY_PI)){
             image.setImageResource(R.drawable.rpilogo)
+        }else if (tabName.equals(Const.RASPPERRY_PI_400)){
+            image.setImageResource(R.drawable.pifourhundred)
         }
         refreshTemperature()
         fab.setOnClickListener {
@@ -71,17 +73,25 @@ private var SHARED_URL_AUTH = "url_authentication"
                   Request.Method.GET, url,
                   { response ->
                       val value = Gson().fromJson(response, HttpRequestTemp::class.java)
-                      if(tabName.equals(Const.ORANGE_PI)) {
-                          temperatureView.setValueAndStartAnim(value.temp / 1000F)
-                          mainInfoText.setText(
-                              value.sysInfo.replace("/dev/mmcblk2p1","\n/dev/mmcblk2p1")
-                                  .replace("{ lukasz@orangepiplus2e\n","").replace("/media/82fe8fc9-188b-4352-a343-96463f90347c}",""))
-                      }else if(tabName.equals(Const.RASPPERRY_PI)){
-                          temperatureView.setValueAndStartAnim(value.temp / 1000f)
-                          mainInfoText.setText(
-                              value.sysInfo.replace("{ root@lukaszraspi\n",""))
+                      when(tabName){
+                          Const.ORANGE_PI ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000F)
+                              mainInfoText.setText(
+                                  value.sysInfo.replace("/dev/mmcblk2p1","\n/dev/mmcblk2p1")
+                                      .replace("{ lukasz@orangepiplus2e\n","").replace("/media/82fe8fc9-188b-4352-a343-96463f90347c}",""))
+                          }
+                          Const.RASPPERRY_PI ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.setText(
+                                  value.sysInfo.replace("{ root@lukaszraspi\n",""))
+                          }
+                          Const.RASPPERRY_PI_400 ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.setText(
+                                  value.sysInfo.replace("{ root@lukaszraspi\n",""))
+                          }
                       }
-                          Log.d("TAG", "Response is: ${response}")
+                      Log.d("TAG", "Response is: ${response}")
                   },
                   {
                       Snackbar.make(temperatureView, "ERROR!! $it",
