@@ -4,5 +4,6 @@ class Const {
         const val RASPPERRY_PI_400 = "Raspberry Pi 400"
         const val ORANGE_PI = "Orange Pi"
         const val RASPPERRY_PI = "Rasspberry Pi"
+        const val SAMSUNG = "Samsung s10+"
     }
 }

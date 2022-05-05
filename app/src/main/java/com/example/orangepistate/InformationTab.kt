@@ -50,6 +50,8 @@ private var SHARED_URL_AUTH = "url_authentication"
             image.setImageResource(R.drawable.rpilogo)
         }else if (tabName == Const.RASPPERRY_PI_400){
             image.setImageResource(R.drawable.pifourhundred)
+        }else if (tabName == Const.SAMSUNG){
+            image.setImageResource(R.drawable.sams)
         }
         refreshTemperature()
         fab.setOnClickListener {
@@ -87,6 +89,12 @@ private var SHARED_URL_AUTH = "url_authentication"
                               temperatureView.setValueAndStartAnim(value.temp / 1000f)
                               mainInfoText.text = ("%s  %s".format(
                                   value.sysInfo.replace("{ root@lukaszraspi\n","").replace("hdd221","\n"),"\n"+value.who))
+                          }
+                          Const.SAMSUNG ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.text = ("%s ".format(
+                                  value.sysInfo.replace("hdd221","\n")))
+
                           }
                       }
                       Log.d("TAG", "Response is: $response")
