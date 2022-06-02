@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         tabs.add(Const.RASPPERRY_PI)
         tabs.add(Const.SAMSUNG)
         tabs.add(Const.RASPPERRY_PI_400)
-        title = "Informations about SBC's"
+        title = "SBC's state"
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI))
