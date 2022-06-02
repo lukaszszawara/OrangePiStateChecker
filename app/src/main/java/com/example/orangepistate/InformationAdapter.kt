@@ -10,11 +10,11 @@ class InformationAdapter(
     mainActivity: MainActivity,
     supportFragmentManager: FragmentManager,
     tabCount: Int,
-    var strings: ArrayList<String>
+    private var strings: ArrayList<String>
 ) : FragmentPagerAdapter(supportFragmentManager) {
     var tabCount = tabCount;
     override fun getItem(position: Int): Fragment {
-            return InformationTab(strings.get(position))
+            return InformationTab(strings[position])
     }
     override fun getCount(): Int {
         return tabCount

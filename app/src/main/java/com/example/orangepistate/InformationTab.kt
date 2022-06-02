@@ -21,8 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
-class InformationTab(tabName: String) : Fragment() {
-    val tabName = tabName
+class InformationTab(val tabName: String) : Fragment() {
     private lateinit var button : Button
 private lateinit var fab : FloatingActionButton
 private lateinit var mainInfoText: TextView
@@ -38,7 +37,6 @@ private var SHARED_URL_AUTH = "url_authentication"
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.informations_tab, container, false)
         button = view.findViewById(R.id.btn_anim)
         image = view.findViewById(R.id.image)
@@ -46,12 +44,16 @@ private var SHARED_URL_AUTH = "url_authentication"
         fab = view.findViewById(R.id.fab)
         mainInfoText = view.findViewById(R.id.main_info)
         sharedPreferences = requireContext().getSharedPreferences(SHARED_NAME, MODE_PRIVATE)
-        if(tabName == Const.RASPPERRY_PI){
-            image.setImageResource(R.drawable.rpilogo)
-        }else if (tabName == Const.RASPPERRY_PI_400){
-            image.setImageResource(R.drawable.pifourhundred)
-        }else if (tabName == Const.SAMSUNG){
-            image.setImageResource(R.drawable.sams)
+        when (tabName) {
+            Const.RASPPERRY_PI -> {
+                image.setImageResource(R.drawable.rpilogo)
+            }
+            Const.RASPPERRY_PI_400 -> {
+                image.setImageResource(R.drawable.pifourhundred)
+            }
+            Const.SAMSUNG -> {
+                image.setImageResource(R.drawable.sams)
+            }
         }
         refreshTemperature()
         fab.setOnClickListener {
