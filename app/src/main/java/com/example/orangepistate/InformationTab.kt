@@ -5,7 +5,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.InputType
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,17 +14,14 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.biansemao.widget.ThermometerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import java.nio.charset.Charset
 
-class InformationTab(tabName: String) : Fragment() {
-    val tabName = tabName
+class InformationTab(val tabName: String) : Fragment() {
     private lateinit var button : Button
 private lateinit var fab : FloatingActionButton
 private lateinit var mainInfoText: TextView
@@ -41,16 +37,23 @@ private var SHARED_URL_AUTH = "url_authentication"
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.informations_tab, container, false)
+        val view = inflater.inflate(R.layout.informations_tab, container, false)
         button = view.findViewById(R.id.btn_anim)
         image = view.findViewById(R.id.image)
         temperatureView = view.findViewById(R.id.tv_thermometer)
         fab = view.findViewById(R.id.fab)
-        mainInfoText = view.findViewById(R.id.main_info);
+        mainInfoText = view.findViewById(R.id.main_info)
         sharedPreferences = requireContext().getSharedPreferences(SHARED_NAME, MODE_PRIVATE)
-        if(tabName.equals(Const.RASPPERRY_PI)){
-            image.setImageResource(R.drawable.rpilogo)
+        when (tabName) {
+            Const.RASPPERRY_PI -> {
+                image.setImageResource(R.drawable.rpilogo)
+            }
+            Const.RASPPERRY_PI_400 -> {
+                image.setImageResource(R.drawable.pifourhundred)
+            }
+            Const.SAMSUNG -> {
+                image.setImageResource(R.drawable.sams)
+            }
         }
         refreshTemperature()
         fab.setOnClickListener {
@@ -68,20 +71,35 @@ private var SHARED_URL_AUTH = "url_authentication"
           val url = getUrl()
           if(!url.isNullOrEmpty()) {
               val stringRequestq =object:  StringRequest(
-                  Request.Method.GET, url,
+                  Method.GET, url,
                   { response ->
                       val value = Gson().fromJson(response, HttpRequestTemp::class.java)
-                      if(tabName.equals(Const.ORANGE_PI)) {
-                          temperatureView.setValueAndStartAnim(value.temp / 1000F)
-                          mainInfoText.setText(
-                              value.sysInfo.replace("/dev/mmcblk2p1","\n/dev/mmcblk2p1")
-                                  .replace("{ lukasz@orangepiplus2e\n","").replace("/media/82fe8fc9-188b-4352-a343-96463f90347c}",""))
-                      }else if(tabName.equals(Const.RASPPERRY_PI)){
-                          temperatureView.setValueAndStartAnim(value.temp / 1000f)
-                          mainInfoText.setText(
-                              value.sysInfo.replace("{ root@lukaszraspi\n",""))
+                      when(tabName){
+                          Const.ORANGE_PI ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000F)
+                              mainInfoText.text =
+                                  value.sysInfo.replace("/dev/mmcblk2p1","\n/dev/mmcblk2p1")
+                                      .replace("{ lukasz@orangepiplus2e\n","").replace("/media/82fe8fc9-188b-4352-a343-96463f90347c}","")
+                          }
+                          Const.RASPPERRY_PI ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.text = ("%s %s".format(
+                                  value.sysInfo.replace("{ root@lukaszraspi\n","")
+                                      .replace("hdd221","\n"),"\n"+value.who))
+                          }
+                          Const.RASPPERRY_PI_400 ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.text = ("%s  %s".format(
+                                  value.sysInfo.replace("{ root@lukaszraspi\n","").replace("hdd221","\n"),"\n"+value.who))
+                          }
+                          Const.SAMSUNG ->{
+                              temperatureView.setValueAndStartAnim(value.temp / 1000f)
+                              mainInfoText.text = ("%s ".format(
+                                  value.sysInfo.replace("hdd221","\n")))
+
+                          }
                       }
-                          Log.d("TAG", "Response is: ${response}")
+                      Log.d("TAG", "Response is: $response")
                   },
                   {
                       Snackbar.make(temperatureView, "ERROR!! $it",
@@ -89,9 +107,9 @@ private var SHARED_URL_AUTH = "url_authentication"
                   }) {
                   override fun getHeaders(): MutableMap<String, String> {
                       val headers = HashMap<String, String>()
-                      headers.put("Auth",getPassword())
+                      headers["Auth"] = getPassword()
                       return headers
-                  }};
+                  }}
 
               queue.add(stringRequestq)
           }else{
@@ -110,7 +128,7 @@ private var SHARED_URL_AUTH = "url_authentication"
           val dialogView = inflater.inflate(R.layout.imput_layout, null)
 
 
-          builder.setView(dialogView);
+          builder.setView(dialogView)
 
           val input = dialogView.findViewById<EditText>(R.id.input)
 

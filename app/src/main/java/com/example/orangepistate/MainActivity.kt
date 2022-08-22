@@ -18,12 +18,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val tabs = ArrayList<String>()
         tabs.add(Const.RASPPERRY_PI)
-        tabs.add(Const.ORANGE_PI)
-        title = "Informations about SBC's"
+        tabs.add(Const.SAMSUNG)
+        tabs.add(Const.RASPPERRY_PI_400)
+        title = "SBC's state"
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI))
-        tabLayout.addTab(tabLayout.newTab().setText(Const.ORANGE_PI))
+        tabLayout.addTab(tabLayout.newTab().setText(Const.SAMSUNG))
+        tabLayout.addTab(tabLayout.newTab().setText(Const.RASPPERRY_PI_400))
         tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         val adapter = InformationAdapter(this, supportFragmentManager,
             tabLayout.tabCount,tabs
